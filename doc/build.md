@@ -1,4 +1,29 @@
-# Build Deskflow
+<!--
+    SPDX-FileCopyrightText: 2024 Symless Ltd.
+    SPDX-License-Identifier: CC0-1.0
+-->
+
+# Building Deskflow
+
+## Configuration
+
+CMake options:
+
+|         Option           |            Description                  |   Default Value    | Additional requirements |
+:-------------------------:|:---------------------------------------:|:------------------:|:-----------------------:|
+| CMAKE_BUILD_TYPE         | Type of Build that is produced          | ReleaseWithDebInfo | |
+| DOCS                     | Build Documentation                     | ON                 | [doxygen] |
+| BUILD_GUI                | Build GUI                               | ON                 | `Qt`|
+| BUILD_INSTALLER          | Build installers/packages               | ON                 | |
+| BUILD_TESTS              | Build unit tests and integration tests  | ON                 | `gtest`|
+| BUILD_UNIFIED            | Build unified binary (client+server)    | OFF                | |
+| ENABLE_COVERAGE          | Enable test coverage                    | OFF                | `gcov` |
+| SYSTEM_LIBEI             | Use system libei (use local dep)        | ON                 | |
+| SYSTEM_LIBPORTAL         | Use system libportal (or local dep)     | ON                 | |
+| LIBPORTAL_STATIC         | Use static libportal (hacky)            | OFF                | `subprojects/packagefiles/libportal/static-lib.diff` |
+
+Example cmake configuration.
+`cmake -S. -Bbuild -DSYSTEM_LIBEI=OFF`
 
 ## Developer Quick Start
 
@@ -11,17 +36,22 @@ wiki page if you have problems.
 
 **1. Dependencies:**
 
-You can either copy/paste the commands for your OS from [`config.yaml`](../config.yaml) or use the deps script.
+ git
+ Qt 6.2
+ cmake 3.24+
+ openssl 3.0+
+ 
+ gtest, tomlplusplus and cli11 will be fetched at build time if not installed on the system. 
 
+ 
 *Linux, macOS, or BSD-derived:*
 ```
 ./scripts/install_deps.sh
 ```
 
 *Windows:*
-```
-python scripts/install_deps.py
-```
+ 
+
 
 **2. Configure:**
 
@@ -50,3 +80,27 @@ cmake --build build -j8
 ```
 ./build/bin/deskflow
 ```
+
+
+
+### VCPKG
+
+  Deskflow is able to use vcpkg to manage the Dependencies. It is recommened for windows users.
+  
+  Follow the set up instructions provided by microsoft.
+  
+  https://learn.microsoft.com/en-us/vcpkg/get_started/get-started?pivots=shell-powershell
+   
+ 
+  To use vcpkg make sure you include a toolchain option when you run the cmake configuration setp
+ 
+  ```
+    -DCMAKE_TOOLCHAIN_FILE=<vcpkg-root>/scripts/buildsystems/vcpkg.cmake
+  ```
+
+  The first time you use vcpkg it will download and build all dependencies, this will take sometime.
+  
+  You should install vcpkg to C:\ or any drive root as on windows there is a limit to how long a path can be, having this setup will also prevent vcpkg to building all its cache inside the projects build dir.
+  
+
+  [doxygen]:https://doxygen.nl
