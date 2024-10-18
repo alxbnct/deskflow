@@ -25,6 +25,11 @@ CMake options:
 Example cmake configuration.
 `cmake -S. -Bbuild -DSYSTEM_LIBEI=OFF`
 
+### CMake preset examples
+
+ You may set user cmake preset in your local copy of the repo see the [CMakeUserPresets.json] for an example. 
+
+
 ## Developer Quick Start
 
 Deskflow is free and open source software, and anyone is welcome to build it,
